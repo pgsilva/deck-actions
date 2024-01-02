@@ -9,9 +9,6 @@ name: Morales Bot - Operations CI/CD
 
 on:
   workflow_call:
-    secrets:
-      token:
-        required: false
 
 permissions:
   contents: write

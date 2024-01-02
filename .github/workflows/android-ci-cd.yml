@@ -2,9 +2,6 @@ name: Morales Bot - Build and Publish APK
 
 on:
   workflow_call:
-    secrets:
-      token:
-        required: false
 
 permissions:
   contents: write
