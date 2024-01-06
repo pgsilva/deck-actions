@@ -40,11 +40,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_prefix: "[AUTO-COMMIT] moralesbot was here."
 
-      - name: Create Pull Request
-        uses: devops-infra/action-pull-request@v0.5.5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ inputs.branch }}  
-          target_branch: ${{ steps.extract_branch.outputs.branch }}
-          label: automatic,feature, moralesbot
-          draft: false
+      - name: Create Pull Request  
+        uses: poorva17/create-pr-action@v2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_BRANCH:  ${{ steps.extract_branch.outputs.branch }}
+          BASE_BRANCH: ${{ inputs.branch }} 
