@@ -20,9 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Make changes to pull request
-        run: date +%s > report.txt
-
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
