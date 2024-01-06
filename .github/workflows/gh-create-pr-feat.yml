@@ -44,7 +44,6 @@ jobs:
         uses: devops-infra/action-pull-request@v0.5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch:  ${{ steps.extract_branch.outputs.branch }}
           target_branch: ${{ inputs.branch }}
           label: automatic,feature, moralesbot
           draft: false
