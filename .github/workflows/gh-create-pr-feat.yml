@@ -24,9 +24,9 @@ jobs:
         run: date +%s > report.txt
 
       - name: Extract branch name
-        id: extract_branch
         shell: bash
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
         
       - name: Create Pull Request
         id: cpr
@@ -34,7 +34,7 @@ jobs:
         with:
           signoff: false
           base: ${{ inputs.branch }}
-          branch: ${ BRANCH_NAME }
+          branch: ${{ steps.extract_branch.outputs.branch }}
           delete-branch: false
           title: '[Morales Bot] New Changes' 
           body: |
