@@ -29,29 +29,9 @@ jobs:
         shell: bash
         run: echo 'The branch name is' ${{ steps.extract_branch.outputs.branch }}
         id: name_branch
-        
-      - name: Change something
-        run: |
-          find . -type f -name "*.md" -print0 | xargs -0 sed -i "s/foo/bar/g"
-
-      - name: Commit and push changes
-        uses: devops-infra/action-commit-push@v0.9.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_prefix: "[AUTO-COMMIT] moralesbot was here."
-
-      - name: Create Pull Request  
-        id: cpr
-        uses: peter-evans/create-pull-request@v5.0.2
-        with:
-          commit-message: Update report
-          base: ${{ inputs.branch }} 
-          branch: ${{ steps.extract_branch.outputs.branch }}
-          delete-branch: false
-          title: '[Morales Bot] New Changes'
-          body: |
-            moralesbot was here. :D
-          labels: |
-            feature
-            automated pr
-          
+      
+      - name: Create PR
+        id: create-pr
+        run: gh pr create --base ${{ inputs.branch }} --add-label feature --title "[Morales Bot] New Changes" --body "moralesbot was here. :D"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
