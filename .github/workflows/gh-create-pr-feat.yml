@@ -23,12 +23,18 @@ jobs:
       - name: Make changes to pull request
         run: date +%s > report.txt
 
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+        
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           signoff: false
-          branch: ${{ inputs.branch }}
+          base: ${{ inputs.branch }}
+          branch: ${ BRANCH_NAME }
           delete-branch: false
           title: '[Morales Bot] New Changes' 
           body: |
