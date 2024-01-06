@@ -32,6 +32,6 @@ jobs:
       
       - name: Create PR
         id: create-pr
-        run: gh pr create --base ${{ inputs.branch }} --add-label feature --title "[Morales Bot] New Changes" --body "moralesbot was here. :D"
+        run: gh pr create --base ${{ inputs.branch }} --title "[Morales Bot] New Changes" --body "moralesbot was here. :D"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
