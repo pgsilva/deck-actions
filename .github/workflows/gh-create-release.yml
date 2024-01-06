@@ -5,7 +5,7 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Morales Bot - Operations CI/CD
+name: Morales Bot - Release GitHub
 
 on:
   workflow_call:
@@ -15,52 +15,7 @@ permissions:
   packages: write
 
 jobs:
-  gradle-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-
-      - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
-
-      - name: Test with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: build test
-
-  gradle-build:
-    needs: gradle-test
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: build -x test
-
   github-release:
-    needs: gradle-build
     runs-on: ubuntu-latest
 
     steps:
@@ -83,13 +38,14 @@ jobs:
           search_commit_body: false
           enable_prerelease_mode: true
 
-      - name: Publish Tag (vX.Y.Z)
+      - name: Publish Tag
         run: |
           echo Version: ${{ steps.bump_version.outputs.version_tag }}
           git tag ${{ steps.bump_version.outputs.version_tag }}
           git push origin ${{ steps.bump_version.outputs.version_tag }}
 
       - name: Publish Release
+        id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.bump_version.outputs.version_tag }}
