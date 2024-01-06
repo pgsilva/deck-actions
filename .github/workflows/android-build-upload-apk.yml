@@ -2,6 +2,16 @@ name: Morales Bot - Generate and Publish APK in GitHub
 
 on:
   workflow_call:
+    inputs:
+      build-config:
+        required: true
+        type: boolean
+      key:
+        required: false
+        type: boolean
+      value:
+        required: false
+        type: boolean
 
 permissions:
   contents: write
@@ -19,6 +29,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
+
+      - name: Write local.properties
+        if: "${{ inputs.build-config == true }}"
+        run: echo ${{ inputs.key }}=\" ${{ inputs.value }}\" > ./local.properties
 
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
