@@ -12,6 +12,9 @@ on:
       value:
         required: false
         type: boolean
+      apk-name:
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -71,5 +74,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: apk/app-debug.apk
-          asset_name: DojoApp.apk
+          asset_name: ${{ inputs.apk-name }}
           asset_content_type: application/zip
