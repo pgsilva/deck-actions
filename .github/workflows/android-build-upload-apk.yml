@@ -6,10 +6,10 @@ on:
       build-config:
         required: true
         type: boolean
-      key:
+      key-name:
         required: false
         type: boolean
-      value:
+      key-value:
         required: false
         type: boolean
       apk-name:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Write local.properties
         if: "${{ inputs.build-config == true }}"
-        run: echo ${{ inputs.key }}=\" ${{ inputs.value }}\" > ./local.properties
+        run: echo ${{ inputs.key-name }}=\" ${{ inputs.key-value }}\" > ./local.properties
 
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
